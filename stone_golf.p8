@@ -1,27 +1,20 @@
 pico-8 cartridge // http://www.pico-8.com
 version 38
 __lua__
-tiles={
-	{1,1,1,1},
-	{1,1,1,1},
-	{1,1,1,1},
-	{1,1,1,1}
-}
-
 function _update()
 	
 end
 
 function _draw()
-	cls()
-	for y = 1,4,1 do
+	cls(1)
+	for y = 0,30,1 do
 		if y%2==0 then
 			offset=0
 		else
 			offset=8
 		end
-		for x = 1,2,1 do
-			tile=tiles[y][x]
+		for x = 0,7,1 do
+			tile=1
 			spr(tile,x*16+offset,y*4)
 			spr(tile+1,x*16+offset+8,y*4)
 		end
