@@ -22,6 +22,8 @@ function _update()
 		update_aim()
 	elseif state==1 then
 		update_throw()
+	elseif state==2 then
+		update_run_to_rock()
 	end
 end
 
@@ -52,26 +54,56 @@ function update_throw()
 	rock_y=sin(rock_angle)*(rock_vel_h/2)+rock_y
 	rock_vel_v+=gravity
 	if rock_z==0 then
+		rock_x=flr(rock_x)
+		rock_y=flr(rock_y)
+		state=2
+	end
+end
+
+function update_run_to_rock()
+	if player_x==rock_x
+	and player_y==rock_y then
+		aim_x=player_x
+		aim_y=player_y
+		rock_visible=0
 		state=0
 	end
+	
+	if player_x>rock_x then
+		player_x-=1
+	end
+	if player_x<rock_x then
+		player_x+=1
+	end
+	if player_y>rock_y then
+		player_y-=1
+	end
+	if player_y<rock_y then
+		player_y+=1
+	end
+--		local run_angle=atan2((rock_y-player_y)/(player_x-rock_x))
+--		player_x+=cos(run_angle)*.5
+--		player_y+=sin(run_angle)*.5	
 end
 
 function _draw()
 	cls(1)
  draw_tiles()
  
- line(
- 	player_x,
- 	player_y,
- 	aim_x,
- 	aim_y
- )
- -- aim sprite
- spr(
- 	0x10,
- 	aim_x-4,
- 	aim_y-4
- )
+ if state==0 then
+	 line(
+	 	player_x,
+	 	player_y,
+	 	aim_x,
+	 	aim_y
+	 )
+	 -- aim sprite
+	 spr(
+	 	0x10,
+	 	aim_x-4,
+	 	aim_y-4
+	 )
+ end
  -- player sprite
  spr(
  	3,
