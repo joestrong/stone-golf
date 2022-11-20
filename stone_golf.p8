@@ -147,9 +147,14 @@ function update_throw()
 	rock.vel_v+=gravity
 	tile=pixel_to_tile(rock.x,rock.y)
 	if smash.visible==false
-	and (tile.x < 0	or tile.y < 0) then
+	and (
+		tile.x < 0
+		or tile.y < 0
+		or tile.x > x_len-1
+		or tile.y > y_len-1
+	) then
 		smash.x=rock.x
-		smash.y=rock.y-rock.z
+		smash.y=rock.y+rock.z
 		smash.visible=true
 	end
 	if rock.z==0 then
