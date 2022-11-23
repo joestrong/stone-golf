@@ -19,17 +19,43 @@ function _draw()
  draw_tiles()
  
  if state==0 then
+	 -- curve line
+	 local vangle=vangle
+	 local prevx=0
+	 local prevy=0
+	 local segment
+	 for i=1,5,1 do
+	 	segment=aim.length/5*i
+	 	local height=tan(vangle)*segment
+	 	if height<=0 then
+	 		break
+	 	end
+	 	local nextx=(aim.x-player.x)/5*i
+	 	local nexty=(aim.y-player.y)/5*i-height
+	 	line(
+	 		player.x+(prevx),
+	 		player.y+(prevy),
+	 		player.x+(nextx),
+	 		player.y+(nexty),
+	 		7
+	 	)
+	 	vangle+=0.02
+	 	prevx=nextx
+	 	prevy=nexty
+	 end
+	 -- bottom line
 	 line(
 	 	player.x,
 	 	player.y,
 	 	aim.x,
-	 	aim.y
+	 	aim.y,
+			5
 	 )
 	 -- aim sprite
 	 spr(
 	 	0x10,
-	 	aim.x-4,
-	 	aim.y-4
+	 	player.x+prevx-4,
+	 	player.y+prevy-4
 	 )
  end
  -- player sprite
@@ -79,6 +105,8 @@ function _draw()
  	bell_pos.y-bell.z
  )
 end
+
+function tan(a) return sin(a)/cos(a) end
 -->8
 -- tiles
 
@@ -116,7 +144,8 @@ end
 -->8
 -- player
 angle=0
-power=10
+vangle=-0.1
+power=5
 gravity=.25
 
 player={
@@ -155,10 +184,22 @@ function update_aim()
 	if btn(➡️) then
 		angle-=0.01	
 	end
+	if btn(⬇️) then
+		vangle-=0.01
+		if vangle<-0.2 then
+			vangle=-0.2
+		end
+	end
+	if btn(⬆️) then
+		vangle+=0.01
+		if vangle>-0.05 then
+			vangle=-0.05
+		end
+	end
 	if btn(❎) then
-		rock.visible=1
-		rock.vel_h=power/2
-		rock.vel_v=-power/5
+		rock.vel_h=cos(vangle)*power
+		rock.vel_v=-sin(vangle)*power
+		rock.visible=1	
 		rock.angle=angle
 		rock.z=0
 		rock.x=player.x
@@ -188,9 +229,10 @@ function update_throw()
 		smash.visible=true
 		sfx(1)
 	end
-	if rock.z==0 then
+	if rock.z>=0 then
 		rock.x=flr(rock.x)
 		rock.y=flr(rock.y)
+		rock.z=0
 		state=2
 		sfx(2)
 	end
