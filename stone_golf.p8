@@ -20,6 +20,9 @@ function _update()
 		if bell.hit==true then
 			update_ring_bell()
 		end
+		if smash.visible==true then
+			update_oob()
+		end
 	elseif state==2 then
 		update_run_to_rock()
 	elseif state==3 then
@@ -200,7 +203,8 @@ aim={
 smash={
 	x=0,
 	y=0,
-	visible=false
+	visible=false,
+	hitlen=0
 }
 local bell_pos=tile_to_pix(4,3)
 bell={
@@ -274,6 +278,7 @@ function update_throw()
 		smash.x=rock.x
 		smash.y=rock.y+rock.z
 		smash.visible=true
+		smash.hitlen=30
 		sfx(1)
 	end
 	if rock.z>=0 then
@@ -333,6 +338,14 @@ function update_ring_bell()
 		bell.sprite=33
 	end
 	bell.hitlen-=1
+end
+
+function update_oob()
+	if smash.hitlen<=0 then
+		state=4
+		smash.hitlen=0
+	end
+	smash.hitlen-=1
 end
 
 function collide(obj1,obj2)
