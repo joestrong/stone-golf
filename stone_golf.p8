@@ -363,9 +363,11 @@ end
 
 function draw_menu()
 	cls(1)
+	print("those in",50,20,7)
+	print("glass houses",43,30,7)
 	spr(
 		9,
-		50,
+		55,
 		50,
 		3,
 		3
