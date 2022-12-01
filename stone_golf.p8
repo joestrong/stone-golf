@@ -7,6 +7,7 @@ __lua__
 -- 2 = run
 -- 3 = main menu
 -- 4 = init level
+-- 5 = level finished
 state=3
 tick=0
 
@@ -25,12 +26,16 @@ function _update()
 		update_menu()
 	elseif state==4 then
 		update_init_level()
+	elseif state==5 then
+		update_level_finish()
 	end
 end
 
 function _draw()
 	if state==3 then
 		draw_menu()
+	elseif state==5 then
+		draw_level_finish()
 	else
 		draw_game()
 	end
@@ -312,7 +317,7 @@ end
 
 function update_ring_bell()
 	if bell.hitlen<=0 then
-		state=3
+		state=5
 		sfx(-2)
 		bell.hitlen=0
 	end
@@ -360,8 +365,27 @@ function draw_menu()
 		3,
 		3
 	)
-	print("level 1",50,80)
- print("press 🅾️",50,90)
+	print("level 1",50,80,7)
+ print("press 🅾️",50,90,7)
+end
+
+function update_level_finish()
+	if btn(❎) then
+ 	state=3
+ end
+end
+
+function draw_level_finish()
+	cls(1)
+	spr(
+		9,
+		50,
+		50,
+		3,
+		3
+	)
+	print("demo complete",50,80,7)
+ print("press ❎",50,90,7)
 end
 __gfx__
 00000000000000330000000000000444444000000000000000000033330000000000000000000000000000000000000000000000000000000000000000000000
