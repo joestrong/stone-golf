@@ -130,6 +130,11 @@ function draw_game()
  	bell.x-4,
  	bell.y+bell.z
  )
+ -- draw instructions
+ print("⬅️&➡️ to aim",5,100,7)
+ print("⬆️&⬇️ to change vertical aim",5,110,7)
+	print("❎ to throw",5,120,7)
+
 end
 
 function tan(a) return sin(a)/cos(a) end
