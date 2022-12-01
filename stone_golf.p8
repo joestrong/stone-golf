@@ -205,8 +205,12 @@ bell={
 function update_init_level()
 	player.x=64
 	player.y=64
+	angle=0
+	vangle=-0.1
 	rock.visible=0
+	bell.sprite=34
 	bell.hit=false
+	smash.visible=false
 	state=0
 end
 
